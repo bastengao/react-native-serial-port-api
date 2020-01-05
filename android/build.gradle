@@ -68,11 +68,13 @@ repositories {
     }
     google()
     jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
+    implementation 'com.github.licheedev:Android-SerialPort-API:2.0.0'
 }
 
 def configureReactNativePom(def pom) {
