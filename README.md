@@ -1,5 +1,7 @@
 # react-native-serial-port-api
 
+Only for android platform based on [Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API)
+
 ## Getting started
 
 `$ npm install react-native-serial-port-api --save`
@@ -10,8 +12,8 @@
 
 ## Usage
 ```javascript
-import SerialPortApi from 'react-native-serial-port-api';
+import SerialPort from 'react-native-serial-port-api';
 
 // TODO: What to do with the module?
-SerialPortApi;
+SerialPort;
 ```
