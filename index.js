@@ -1,5 +1,3 @@
-import { NativeModules } from 'react-native';
+import SerialPort from './src/SerialPort';
 
-const { SerialPortApi } = NativeModules;
-
-export default SerialPortApi;
+export default SerialPort;

@@ -25,5 +25,8 @@ android/.classpath
 android/.project
 android/.settings
 android/bin
+android/gradle
+android/gradlew
+android/gradlew.bat
 
 .vscode
