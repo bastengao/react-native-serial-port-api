@@ -5,7 +5,8 @@
   "description": "React Native Serial Port API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate-docs": "node_modules/.bin/jsdoc src -r -R README.md -t node_modules/docdash"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,8 @@
     "react-native": ">=0.59.0-rc.0 <1.0.x"
   },
   "devDependencies": {
+    "docdash": "^1.1.1",
+    "jsdoc": "^3.6.3",
     "react": "^16.8.3",
     "react-native": "^0.59.10"
   },

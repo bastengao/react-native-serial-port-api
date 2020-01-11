@@ -11,10 +11,11 @@ Only for android platform based on [Android-SerialPort-API](https://github.com/l
 `$ react-native link react-native-serial-port-api`
 
 ## Usage
-```javascript
-import SerialPort from 'react-native-serial-port-api';
 
-SerialPort.open("/dev/ttyS4", { baudRate: 38400 }).then(serialPort => {
+```javascript
+import SerialPortAPI from 'react-native-serial-port-api';
+
+SerialPortAPI.open("/dev/ttyS4", { baudRate: 38400 }).then(serialPort => {
   console.log(serialPort.getPath());
 });
 ```

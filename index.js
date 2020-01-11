@@ -1,3 +1,3 @@
-import SerialPort from './src/SerialPort';
+import SerialPortAPI from './src/API';
 
-export default SerialPort;
+export default SerialPortAPI;
