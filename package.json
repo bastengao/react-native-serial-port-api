@@ -1,9 +1,15 @@
 {
   "name": "react-native-serial-port-api",
   "title": "React Native Serial Port API",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React Native Serial Port API",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "src/",
+    "android/src/",
+    "android/build.gradle"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate-docs": "node_modules/.bin/jsdoc src -r -R README.md -t node_modules/docdash"
