@@ -117,9 +117,14 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
         promise.resolve(true);
     }
 
-    public void sendEvent(String eventName, @Nullable WritableMap event) {
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, event);
+    public void sendEvent(final String eventName, @Nullable final WritableMap event) {
+        reactContext.runOnUiQueueThread(new Runnable() {
+            @Override
+            public void run() {
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit(eventName, event);
+            }
+        });
     }
 
     public static byte[] hexStringToByteArray(String s) {
