@@ -1,6 +1,6 @@
 # react-native-serial-port-api
 
-Only for android platform based on [Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API)
+Only for android platform based on [Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API).
 
 ## Getting started
 
@@ -15,7 +15,23 @@ Only for android platform based on [Android-SerialPort-API](https://github.com/l
 ```javascript
 import SerialPortAPI from 'react-native-serial-port-api';
 
-SerialPortAPI.open("/dev/ttyS4", { baudRate: 38400 }).then(serialPort => {
-  console.log(serialPort.getPath());
-});
+async function example() {
+  const serialPort = SerialPortAPI.open("/dev/ttyS4", { baudRate: 38400 });
+
+  // subscribe received data
+  const sub = serialPort.onReceived(buff => {
+    console.log(buff.toString('hex').toUpperCase());
+  })
+
+  // unsubscribe
+  // sub.remove()
+
+  // send data with hex format
+  await serialPort.send('00FF')
+
+  // close
+  serlialPort.close()
+}
 ```
+
+See [documentation](https://bastengao.com/react-native-serial-port-api/) for details.
