@@ -24,13 +24,13 @@ async function example() {
   })
 
   // unsubscribe
-  // sub.remove()
+  // sub.remove();
 
   // send data with hex format
-  await serialPort.send('00FF')
+  await serialPort.send('00FF');
 
   // close
-  serlialPort.close()
+  serlialPort.close();
 }
 ```
 
