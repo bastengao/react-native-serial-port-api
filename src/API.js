@@ -11,6 +11,12 @@ export default class API {
    */
 
   /**
+   * @callback stringCallback
+   * @param {string} value
+   */
+
+
+  /**
    * @typedef {Object} openOptions
    * @property {number} baudRate such as 9600
    * @property {number} [parity=0] 0: none, 1: odd, 2: even
@@ -32,6 +38,22 @@ export default class API {
    */
   static devicePaths(callback) {
     SerialPortAPI.devicePaths(callback);
+  }
+
+  /**
+   * set su binary path
+   * @param {string} suPath
+   */
+  static setSuPath(suPath) {
+    SerialPortAPI.setSuPath(subPath);
+  }
+
+  /**
+   * get su binary path
+   * @param {stringCallback} callback
+   */
+  static getSubPath(callback) {
+    SerialPortAPI.getSuPath(callback)
   }
 
   /**

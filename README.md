@@ -35,3 +35,10 @@ async function example() {
 ```
 
 See [documentation](https://bastengao.com/react-native-serial-port-api/) for details.
+
+## Development
+
+Generate API docs.
+
+    npm install -g jsdoc
+    jsdoc src -r -R README.md -t node_modules/docdash

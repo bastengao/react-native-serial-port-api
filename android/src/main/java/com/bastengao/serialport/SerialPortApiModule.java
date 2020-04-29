@@ -56,6 +56,16 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
     }
 
     @ReactMethod
+    public void setSuPath(final String suPath) {
+        SerialPort.setSuPath(suPath);
+    }
+
+    @ReactMethod
+    public void getSuPath(final Callback callback) {
+        callback.invoke(SerialPort.getSuPath());
+    }
+
+    @ReactMethod
     public void open(final String path, int baudRate, int parity, int dataBits, int stopBits, Promise promise) {
         if (serialPorts.containsKey(path)) {
             promise.resolve(serialPorts.get(path));
