@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="SerialPort.html">SerialPort</a><ul class='methods'><li data-type='method'><a href="SerialPort.html#close">close</a></li><li data-type='method'><a href="SerialPort.html#getPath">getPath</a></li><li data-type='method'><a href="SerialPort.html#onReceived">onReceived</a></li><li data-type='method'><a href="SerialPort.html#send">send</a></li></ul></li><li><a href="Subscription.html">Subscription</a><ul class='methods'><li data-type='method'><a href="Subscription.html#remove">remove</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#deviceNames">deviceNames</a></li><li><a href="global.html#devicePaths">devicePaths</a></li><li><a href="global.html#open">open</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="SerialPort.html">SerialPort</a><ul class='methods'><li data-type='method'><a href="SerialPort.html#close">close</a></li><li data-type='method'><a href="SerialPort.html#getPath">getPath</a></li><li data-type='method'><a href="SerialPort.html#onReceived">onReceived</a></li><li data-type='method'><a href="SerialPort.html#send">send</a></li></ul></li><li><a href="Subscription.html">Subscription</a><ul class='methods'><li data-type='method'><a href="Subscription.html#remove">remove</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#deviceNames">deviceNames</a></li><li><a href="global.html#devicePaths">devicePaths</a></li><li><a href="global.html#getSubPath">getSubPath</a></li><li><a href="global.html#open">open</a></li><li><a href="global.html#setSuPath">setSuPath</a></li></ul>
 </nav>
 
 <div id="main">
@@ -136,7 +136,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="API.js.html">API.js</a>, <a href="API.js.html#line25">line 25</a>
+        <a href="API.js.html">API.js</a>, <a href="API.js.html#line31">line 31</a>
     </li></ul></dd>
     
 
@@ -272,7 +272,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="API.js.html">API.js</a>, <a href="API.js.html#line33">line 33</a>
+        <a href="API.js.html">API.js</a>, <a href="API.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -396,6 +396,142 @@
 
     
 
+    <h4 class="name" id="getSubPath"><span class="type-signature"></span>getSubPath<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="API.js.html">API.js</a>, <a href="API.js.html#line55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    get su binary path
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#stringCallback">stringCallback</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="open"><span class="type-signature"></span>open<span class="signature">(devicePath, options)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="SerialPort.html">SerialPort</a>>}</span></h4>
 
     
@@ -408,7 +544,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="API.js.html">API.js</a>, <a href="API.js.html#line43">line 43</a>
+        <a href="API.js.html">API.js</a>, <a href="API.js.html#line65">line 65</a>
     </li></ul></dd>
     
 
@@ -573,6 +709,142 @@
 
 
         
+            
+
+    
+
+    <h4 class="name" id="setSuPath"><span class="type-signature"></span>setSuPath<span class="signature">(suPath)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="API.js.html">API.js</a>, <a href="API.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    set su binary path
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>suPath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
     
@@ -723,7 +995,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="API.js.html">API.js</a>, <a href="API.js.html#line13">line 13</a>
+        <a href="API.js.html">API.js</a>, <a href="API.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -1089,6 +1361,138 @@
 
 
             
+                
+
+    
+
+    <h4 class="name" id="stringCallback"><span class="type-signature"></span>stringCallback<span class="signature">(value)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="API.js.html">API.js</a>, <a href="API.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
     
 
     
@@ -1106,7 +1510,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Sun Jan 12 2020 15:23:13 GMT+0800 (CST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Wed Apr 29 2020 20:10:33 GMT+0800 (GMT+08:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
