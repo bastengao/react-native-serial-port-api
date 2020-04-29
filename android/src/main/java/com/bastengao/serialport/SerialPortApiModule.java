@@ -85,6 +85,10 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
             System.out.println("error: " + e.getMessage());
             e.printStackTrace();
             promise.reject(null, e.getMessage());
+        } catch (SecurityException e) {
+            System.out.println("error: " + e.getMessage());
+            e.printStackTrace();
+            promise.reject(null, "no permission to read or write this serial port");
         }
     }
 
