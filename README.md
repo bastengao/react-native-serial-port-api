@@ -16,7 +16,7 @@ Only for android platform based on [Android-SerialPort-API](https://github.com/l
 import SerialPortAPI from 'react-native-serial-port-api';
 
 async function example() {
-  const serialPort = SerialPortAPI.open("/dev/ttyS4", { baudRate: 38400 });
+  const serialPort = await SerialPortAPI.open("/dev/ttyS4", { baudRate: 38400 });
 
   // subscribe received data
   const sub = serialPort.onReceived(buff => {
@@ -41,4 +41,4 @@ See [documentation](https://bastengao.com/react-native-serial-port-api/) for det
 Generate API docs.
 
     npm install -g jsdoc
-    jsdoc src -r -R README.md -t node_modules/docdash
+    jsdoc src -r -R README.md -t node_modules/docdash -d ./docs/
