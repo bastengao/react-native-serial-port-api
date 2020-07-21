@@ -8,7 +8,7 @@ Only for android platform based on [Android-SerialPort-API](https://github.com/l
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-serial-port-api`
+`$ npx react-native link react-native-serial-port-api`
 
 ## Usage
 
@@ -30,7 +30,7 @@ async function example() {
   await serialPort.send('00FF');
 
   // close
-  serlialPort.close();
+  serialPort.close();
 }
 ```
 
