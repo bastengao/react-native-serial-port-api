@@ -45,14 +45,14 @@ export default class API {
    * @param {string} suPath
    */
   static setSuPath(suPath) {
-    SerialPortAPI.setSuPath(subPath);
+    SerialPortAPI.setSuPath(suPath);
   }
 
   /**
    * get su binary path
    * @param {stringCallback} callback
    */
-  static getSubPath(callback) {
+  static getSuPath(callback) {
     SerialPortAPI.getSuPath(callback)
   }
 
