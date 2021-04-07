@@ -1,8 +1,8 @@
 import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 import SerialPort from './SerialPort';
 
-const SerialPortAPI = Platform.OS === 'android' ? NativeModules.SerialPortAPI : {};
-const eventEmitter = new NativeEventEmitter(SerialPortAPI);
+const { SerialPortAPI } = NativeModules;
+const eventEmitter = Platform.OS === 'android' ? new NativeEventEmitter(SerialPortAPI) : null;
 
 export default class API {
   /**
