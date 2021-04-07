@@ -1,8 +1,8 @@
-import { NativeEventEmitter, NativeModules } from 'react-native';
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 import SerialPort from './SerialPort';
 
 const { SerialPortAPI } = NativeModules;
-const eventEmitter = new NativeEventEmitter(SerialPortAPI);
+const eventEmitter = Platform.OS === 'android' ? new NativeEventEmitter(SerialPortAPI) : null;
 
 export default class API {
   /**
@@ -29,6 +29,7 @@ export default class API {
    * @param {stringArrayCallback} callback
    */
   static deviceNames(callback) {
+    if (Platform.OS !== 'android') throw new Error(`Not support ${Platform.OS}`)
     SerialPortAPI.deviceNames(callback);
   }
 
@@ -37,6 +38,7 @@ export default class API {
    * @param {stringArrayCallback} callback
    */
   static devicePaths(callback) {
+    if (Platform.OS !== 'android') throw new Error(`Not support ${Platform.OS}`)
     SerialPortAPI.devicePaths(callback);
   }
 
@@ -45,14 +47,16 @@ export default class API {
    * @param {string} suPath
    */
   static setSuPath(suPath) {
-    SerialPortAPI.setSuPath(subPath);
+    if (Platform.OS !== 'android') throw new Error(`Not support ${Platform.OS}`)
+    SerialPortAPI.setSuPath(suPath);
   }
 
   /**
    * get su binary path
    * @param {stringCallback} callback
    */
-  static getSubPath(callback) {
+  static getSuPath(callback) {
+    if (Platform.OS !== 'android') throw new Error(`Not support ${Platform.OS}`)
     SerialPortAPI.getSuPath(callback)
   }
 
@@ -63,6 +67,7 @@ export default class API {
    * @returns {Promise<SerialPort>} connected serial port
    */
   static open(devicePath, {baudRate, parity = 0, dataBits = 8, stopBits = 1}) {
+    if (Platform.OS !== 'android') throw new Error(`Not support ${Platform.OS}`)
     return SerialPortAPI.open(devicePath, baudRate, parity, dataBits, stopBits)
       .then(serialPort => {
         return Promise.resolve(new SerialPort(serialPort, eventEmitter));
