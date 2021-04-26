@@ -68,7 +68,7 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
     @ReactMethod
     public void open(final String path, int baudRate, int parity, int dataBits, int stopBits, Promise promise) {
         if (serialPorts.containsKey(path)) {
-            promise.resolve(serialPorts.get(path));
+            promise.resolve(serialPorts.get(path).toJS());
             return;
         }
 
