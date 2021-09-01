@@ -2,7 +2,6 @@ import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 import SerialPort from './SerialPort';
 
 const { SerialPortAPI } = NativeModules;
-const eventEmitter = Platform.OS === 'android' ? new NativeEventEmitter(SerialPortAPI) : null;
 
 export default class API {
   /**
@@ -68,6 +67,8 @@ export default class API {
    */
   static open(devicePath, {baudRate, parity = 0, dataBits = 8, stopBits = 1}) {
     if (Platform.OS !== 'android') throw new Error(`Not support ${Platform.OS}`)
+    const eventEmitter = Platform.OS === 'android' ? new NativeEventEmitter(NativeModules.SerialPortAPI) : null;
+
     return SerialPortAPI.open(devicePath, baudRate, parity, dataBits, stopBits)
       .then(serialPort => {
         return Promise.resolve(new SerialPort(serialPort, eventEmitter));
