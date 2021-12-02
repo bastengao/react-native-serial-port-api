@@ -6,9 +6,13 @@ Only for android platform based on [Android-SerialPort-API](https://github.com/l
 
 `$ npm install react-native-serial-port-api --save`
 
-### Mostly automatic installation
+### (Optional) React Native < 0.60
+
+Run this command if use React Native before version 0.60.
 
 `$ npx react-native link react-native-serial-port-api`
+
+[Autolinking](https://github.com/react-native-community/cli/blob/master/docs/autolinking.md) will works for 0.60 or above.
 
 ## Usage
 
