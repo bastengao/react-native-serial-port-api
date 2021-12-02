@@ -2,7 +2,6 @@ package com.bastengao.serialport;
 
 import android.serialport.SerialPort;
 import android.serialport.SerialPortFinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
@@ -131,7 +130,7 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
         promise.resolve(true);
     }
 
-    public void sendEvent(final String eventName, @Nullable final WritableMap event) {
+    public void sendEvent(final String eventName, final WritableMap event) {
         reactContext.runOnUiQueueThread(new Runnable() {
             @Override
             public void run() {
