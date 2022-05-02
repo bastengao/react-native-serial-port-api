@@ -43,6 +43,17 @@ export default class API {
   }
 
   /**
+   * Get serial port device paths
+   * @returns {Promise<Array<string>>} paths
+   */
+  static devicePathsAsync() {
+    if (Platform.OS !== 'android') throw new Error(`Not support ${Platform.OS}`)
+    return new Promise((resolve, reject) => {
+      SerialPortAPI.devicePaths(resolve);
+    });
+  }
+
+  /**
    * set su binary path
    * @param {string} suPath
    */
