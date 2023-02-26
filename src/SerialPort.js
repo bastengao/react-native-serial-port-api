@@ -32,6 +32,7 @@ class SerialPort {
     this.serialPort = serialPort;
     this.eventEmitter = eventEmitter;
     this.listeners = [];
+    this.subscriptions = [];
   }
 
   /**
@@ -69,16 +70,18 @@ class SerialPort {
       event: DataReceivedEvent,
       listener: listenerProxy
     });
-    return this.eventEmitter.addListener(DataReceivedEvent, listenerProxy)
+    const sub = this.eventEmitter.addListener(DataReceivedEvent, listenerProxy)
+    this.subscriptions.push(sub);
+    return sub;
   }
 
   /**
    * Close serial port
    */
   close() {
-    for (var i = 0; i < this.listeners.length; i++) {
-      let {event, listener} = this.listeners[i];
-      this.eventEmitter.removeListener(event, listener)
+    for (var i = 0; i < this.subscriptions.length; i++) {
+      const sub = this.subscriptions[i];
+      sub.remove();
     }
     return SerialPortAPI.close(this.path)
   }
