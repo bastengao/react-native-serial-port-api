@@ -3,16 +3,23 @@
   "title": "React Native Serial Port API",
   "version": "1.3.4",
   "description": "React Native Serial Port API",
-  "main": "index.js",
+  "main": "lib/commonjs/index.js",
+  "react-native": "src/index.ts",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/src/index.d.ts",
   "files": [
-    "index.js",
-    "src/",
+    "src",
+    "lib",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
     "android/src/",
     "android/build.gradle"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-docs": "node_modules/.bin/jsdoc src -r -R README.md -t node_modules/docdash -d ./docs"
+    "generate-docs": "node_modules/.bin/jsdoc src -r -R README.md -t node_modules/docdash -d ./docs",
+    "prepack": "bob build"
   },
   "repository": {
     "type": "git",
@@ -39,12 +46,27 @@
     "docdash": "^1.1.1",
     "jsdoc": "^3.6.3",
     "react": "^16.8.3",
-    "react-native": "^0.59.10"
+    "react-native": "^0.59.10",
+    "react-native-builder-bob": "^0.20.3",
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "buffer": "^5.4.3"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ]
 }

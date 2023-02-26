@@ -1,8 +1,21 @@
-import { NativeModules } from 'react-native';
+import { EventEmitter, EventSubscription, NativeModules } from 'react-native';
 import { Buffer } from 'buffer';
 
 const { SerialPortAPI } = NativeModules;
 const DataReceivedEvent = 'dataReceived';
+
+export interface SerialPortWrapper {
+  path: string;
+}
+
+export interface EventData {
+  data: string;
+}
+
+export interface ListenerProxy {
+  event: string;
+  listener: (data: EventData) => void;
+}
 
 /**
  * @name Subscription
@@ -27,9 +40,13 @@ const DataReceivedEvent = 'dataReceived';
  * @hideconstructor
  */
 class SerialPort {
-  constructor(serialPort, eventEmitter) {
+  private path: string;
+  private eventEmitter: any;
+  private listeners: ListenerProxy[];
+  private subscriptions: EventSubscription[];
+
+  constructor(serialPort: SerialPortWrapper, eventEmitter: EventEmitter) {
     this.path = serialPort.path;
-    this.serialPort = serialPort;
     this.eventEmitter = eventEmitter;
     this.listeners = [];
     this.subscriptions = [];
@@ -47,7 +64,7 @@ class SerialPort {
    * @param {string} hex the hex of data
    * @returns {Promise} success promise
    */
-  send(hex) {
+  send(hex: string) {
     return SerialPortAPI.send(this.path, hex)
   }
 
@@ -56,8 +73,8 @@ class SerialPort {
    * @param {listener} listener
    * @returns {Subscription} subscription
    */
-  onReceived(listener) {
-    const listenerProxy = (event) => {
+  onReceived(listener: (data: Buffer) => void): EventSubscription {
+    const listenerProxy = (event: EventData) => {
       if (!event.data) {
         return;
       }
