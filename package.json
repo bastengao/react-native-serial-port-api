@@ -6,7 +6,7 @@
   "main": "lib/commonjs/index.js",
   "react-native": "src/index.ts",
   "module": "lib/module/index.js",
-  "types": "lib/typescript/src/index.d.ts",
+  "types": "lib/typescript/index.d.ts",
   "files": [
     "src",
     "lib",
@@ -43,6 +43,7 @@
     "react-native": "*"
   },
   "devDependencies": {
+    "@types/react-native": "^0.60.31",
     "docdash": "^1.1.1",
     "jsdoc": "^3.6.3",
     "react": "^16.8.3",
