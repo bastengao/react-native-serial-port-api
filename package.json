@@ -43,7 +43,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@types/react-native": "^0.71.4",
+    "@types/react-native": "^0.60.31",
     "docdash": "^1.1.1",
     "jsdoc": "^3.6.3",
     "react": "^16.8.3",
