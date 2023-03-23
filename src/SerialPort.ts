@@ -10,6 +10,7 @@ export interface SerialPortWrapper {
 
 export interface EventData {
   data: string;
+  path: string;
 }
 
 export interface ListenerProxy {
@@ -64,7 +65,7 @@ class SerialPort {
    * @param {string} hex the hex of data
    * @returns {Promise} success promise
    */
-  send(hex: string) {
+  send(hex: string): boolean {
     return SerialPortAPI.send(this.path, hex)
   }
 
@@ -73,14 +74,17 @@ class SerialPort {
    * @param {listener} listener
    * @returns {Subscription} subscription
    */
-  onReceived(listener: (data: Buffer) => void): EventSubscription {
+  onReceived(listener: (buffer: Buffer, path: string) => void): EventSubscription {
     const listenerProxy = (event: EventData) => {
+      if (!event.path || this.path !== event.path) {
+        return;
+      }
       if (!event.data) {
         return;
       }
 
       const buff = Buffer.from(event.data, 'hex');
-      listener(buff);
+      listener(buff, event.path);
     }
 
     this.listeners.push({
