@@ -74,7 +74,7 @@ class SerialPort {
    * @param {listener} listener
    * @returns {Subscription} subscription
    */
-  onReceived(listener: (buffer: Buffer, path: string) => void): EventSubscription {
+  onReceived(listener: (buffer: Buffer) => void): EventSubscription {
     const listenerProxy = (event: EventData) => {
       if (!event.path || this.path !== event.path) {
         return;
