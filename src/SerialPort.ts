@@ -84,7 +84,7 @@ class SerialPort {
       }
 
       const buff = Buffer.from(event.data, 'hex');
-      listener(buff, event.path);
+      listener(buff);
     }
 
     this.listeners.push({
