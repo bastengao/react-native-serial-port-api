@@ -65,7 +65,7 @@ class SerialPort {
    * @param {string} hex the hex of data
    * @returns {Promise} success promise
    */
-  send(hex: string): boolean {
+  send(hex: string): Promise<boolean> {
     return SerialPortAPI.send(this.path, hex)
   }
 
