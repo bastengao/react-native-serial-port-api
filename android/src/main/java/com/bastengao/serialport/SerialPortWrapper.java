@@ -48,6 +48,7 @@ public class SerialPortWrapper {
                             byte[] data = Arrays.copyOf(buffer, size);
                             String hex = SerialPortApiModule.bytesToHex(data);
                             event.putString("data", hex);
+                            event.putString("path", path);
                             sender.sendEvent(DataReceivedEvent, event);
                         }
                     } catch (IOException e) {

@@ -77,7 +77,7 @@ export default class API {
    * @param {openOptions} options
    * @returns {Promise<SerialPort>} connected serial port
    */
-  static open(devicePath: string, {baudRate, parity = 0, dataBits = 8, stopBits = 1}: { baudRate: number, parity?: number, dataBits?: number, stopBits?: number }) {
+  static open(devicePath: string, {baudRate, parity = 0, dataBits = 8, stopBits = 1}: { baudRate: number, parity?: number, dataBits?: number, stopBits?: number }): Promise<SerialPort> {
     if (Platform.OS !== 'android') throw new Error(`Not support ${Platform.OS}`)
     return SerialPortAPI.open(devicePath, baudRate, parity, dataBits, stopBits)
       .then((serialPort: SerialPortWrapper) => {

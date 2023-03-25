@@ -35,6 +35,13 @@
     "name": "bastengao",
     "email": "bastengao@gmail.com"
   },
+  "contributors": [
+    {
+      "name": "Alessandro Raffa @ Infobiotech",
+      "email": "a.raffa@infobiotech.com",
+      "url": "https://github.com/infobiotech"
+    }
+  ],
   "license": "MIT",
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
