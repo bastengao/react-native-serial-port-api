@@ -37,16 +37,15 @@ public class SerialPortWrapper {
         this.readThread = new Thread(new Runnable() {
             @Override
             public void run() {
+                byte[] buffer = new byte[64];
                 while (!closed.get()) {
                     try {
                         int size;
-                        byte[] buffer = new byte[64];
                         if (in == null) return;
                         size = in.read(buffer);
                         if (size > 0) {
                             WritableMap event = Arguments.createMap();
-                            byte[] data = Arrays.copyOf(buffer, size);
-                            String hex = SerialPortApiModule.bytesToHex(data);
+                            String hex = SerialPortApiModule.bytesToHex(buffer, size);
                             event.putString("data", hex);
                             event.putString("path", path);
                             sender.sendEvent(DataReceivedEvent, event);
