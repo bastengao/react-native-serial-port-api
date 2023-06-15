@@ -65,7 +65,7 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
     }
 
     @ReactMethod
-    public void open(final String path, int baudRate, int parity, int dataBits, int stopBits, Promise promise) {
+    public void open(final String path, int baudRate, int parity, int dataBits, int stopBits, int readBufferSize, Promise promise) {
         if (serialPorts.containsKey(path)) {
             promise.resolve(serialPorts.get(path).toJS());
             return;
@@ -85,7 +85,7 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
                     .stopBits(stopBits)
                     .build();
 
-            SerialPortWrapper wrapper = new SerialPortWrapper(path, serialPort, this, remover);
+            SerialPortWrapper wrapper = new SerialPortWrapper(path, readBufferSize, serialPort, this, remover);
 
             // TODO: handle previous value
             serialPorts.put(path, wrapper);

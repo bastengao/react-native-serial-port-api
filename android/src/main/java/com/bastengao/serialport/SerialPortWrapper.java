@@ -26,7 +26,7 @@ public class SerialPortWrapper {
 
     private AtomicBoolean closed = new AtomicBoolean(false);
 
-    public SerialPortWrapper(String path, SerialPort serialPort, final EventSender sender, Remover remover) {
+    public SerialPortWrapper(final String path, final int readBufferSize, SerialPort serialPort, final EventSender sender, Remover remover) {
         this.path = path;
         this.serialPort = serialPort;
         this.sender = sender;
@@ -37,7 +37,7 @@ public class SerialPortWrapper {
         this.readThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                byte[] buffer = new byte[64];
+                byte[] buffer = new byte[readBufferSize];
                 while (!closed.get()) {
                     try {
                         int size;

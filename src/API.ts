@@ -22,6 +22,7 @@ export default class API {
    * @property {number} [parity=0] 0: none, 1: odd, 2: even
    * @property {number} [dataBits=8] 5~8
    * @property {number} [stopBits=1] 1 or 2
+   * @property {number} [readBufferSize=64] set read buffer size
    */
 
   /**
@@ -77,9 +78,9 @@ export default class API {
    * @param {openOptions} options
    * @returns {Promise<SerialPort>} connected serial port
    */
-  static open(devicePath: string, {baudRate, parity = 0, dataBits = 8, stopBits = 1}: { baudRate: number, parity?: number, dataBits?: number, stopBits?: number }): Promise<SerialPort> {
+  static open(devicePath: string, {baudRate, parity = 0, dataBits = 8, stopBits = 1, readBufferSize = 64}: { baudRate: number, parity?: number, dataBits?: number, stopBits?: number, readBufferSize?: number }): Promise<SerialPort> {
     if (Platform.OS !== 'android') throw new Error(`Not support ${Platform.OS}`)
-    return SerialPortAPI.open(devicePath, baudRate, parity, dataBits, stopBits)
+    return SerialPortAPI.open(devicePath, baudRate, parity, dataBits, stopBits, readBufferSize)
       .then((serialPort: SerialPortWrapper) => {
         return Promise.resolve(new SerialPort(serialPort, eventEmitter!));
       })
