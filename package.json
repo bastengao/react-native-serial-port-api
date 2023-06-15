@@ -1,7 +1,7 @@
 {
   "name": "react-native-serial-port-api",
   "title": "React Native Serial Port API",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "React Native Serial Port API",
   "main": "lib/commonjs/index.js",
   "react-native": "src/index.ts",
@@ -18,7 +18,8 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-docs": "node_modules/.bin/jsdoc src -r -R README.md -t node_modules/docdash -d ./docs",
+    "generate-docs": "node_modules/.bin/jsdoc lib/module -r -R README.md -t node_modules/docdash -d ./docs",
+    "generate-docs2": "typedoc --out ./docs2 src/index.ts",
     "prepack": "bob build"
   },
   "repository": {
@@ -56,6 +57,7 @@
     "react": "^16.8.3",
     "react-native": "^0.59.10",
     "react-native-builder-bob": "^0.20.3",
+    "typedoc": "^0.24.8",
     "typescript": "^4.9.5"
   },
   "dependencies": {
