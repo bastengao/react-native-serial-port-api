@@ -106,6 +106,7 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
         SerialPortWrapper wrapper = serialPorts.get(path);
         if (wrapper == null) {
             promise.reject(null, "serialport not open");
+            return; // 添加return语句，防止继续执行
         }
 
         byte[] buffer = hexStringToByteArray(hexStr);
@@ -121,11 +122,12 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
 
     @ReactMethod
     public void close(String path, Promise promise) {
+        Log.i("serialport", "close: " + path);
         SerialPortWrapper wrapper = serialPorts.get(path);
         if (wrapper == null) {
             promise.reject(null, "serialport not open");
+            return; // 添加return语句，防止继续执行
         }
-
         wrapper.close();
         promise.resolve(true);
     }

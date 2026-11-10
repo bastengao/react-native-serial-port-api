@@ -134,4 +134,12 @@ public class RingBuffer {
         // 总容量减去已用大小，再减去1（保留的空位）
         return (capacity - 1) - size();
     }
+
+
+    public void clear() {
+        this.head = 0;
+        this.tail = 0;
+        // 如果您在read方法中没有清零，可以在这里清零帮助调试
+        // Arrays.fill(buffer, (byte)0);
+    }
 }

@@ -48,18 +48,29 @@ public class CmdProtocolParser {
         // 将新数据写入环形缓冲区
         boolean success = ringBuffer.write(data, 0, size);
         if (!success) {
-            Log.e("serialport", "RingBuffer 溢出！丢弃旧数据。");
-            // 实际应用中可能需要更复杂的处理，例如清空缓冲区或扩容
+            Log.e("serialport", "RingBuffer 溢出！丢弃旧数据");
+            // 策略：清空缓冲区
+            ringBuffer.clear();
+
+            // 再次尝试写入
+            // 这次写入仍然可能失败，如果单次接收的数据块大小超过了缓冲区的总容量
+            success = ringBuffer.write(data, 0, size);
+            if (!success) {
+                // 这是一个严重问题，意味着你的缓冲区总容量设置得太小，
+                // 连一个基本的数据块都装不下。
+                Log.e("serialport", "CRITICAL：传入数据块大小 (" + size + ") 大于总缓冲区容量。数据丢失！");
+                // 在这种情况下，除了记录日志，我们无能为力，只能等待下一个数据块
+                return;
+            }
         }
 
         // 循环解析，直到缓冲区中没有完整的数据包
         while (true) {
             if (!parse()) {
                 break;
-            };
+            }
         }
     }
-    
     /**
      * 尝试从缓冲区解析一个数据包.
      * @return 如果成功解析了一个包，返回true，否则返回false.
