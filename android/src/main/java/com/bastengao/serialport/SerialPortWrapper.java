@@ -9,7 +9,6 @@ import com.facebook.react.bridge.WritableMap;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -23,41 +22,69 @@ public class SerialPortWrapper {
     private InputStream in;
     private Thread readThread;
     private Remover remover;
+    private final CmdProtocolParser protocolParser;
 
     private AtomicBoolean closed = new AtomicBoolean(false);
 
-    public SerialPortWrapper(String path, SerialPort serialPort, final EventSender sender, Remover remover) {
+    public SerialPortWrapper(final String path, final int readBufferSize, SerialPort serialPort, final EventSender sender, Remover remover) {
+        this(path, readBufferSize, serialPort, sender, remover, null);
+    }
+
+    public SerialPortWrapper(final String path, final int readBufferSize, SerialPort serialPort,
+            final EventSender sender, Remover remover, ProtocolConfig config) {
         this.path = path;
         this.serialPort = serialPort;
         this.sender = sender;
         this.remover = remover;
         this.out = this.serialPort.getOutputStream();
         this.in = this.serialPort.getInputStream();
+        
+        this.protocolParser = config == null ? null : new CmdProtocolParser(new CmdProtocolParser.PacketListener() {
+            @Override
+            public void onPacketReceived(byte[] packet) {
+                emitData(packet, packet.length);
+            }
+        }, readBufferSize * 2, config);
 
         this.readThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                byte[] buffer = new byte[64];
+                // 这个buffer只是用于in.read()的临时存储
+                byte[] buffer = new byte[readBufferSize];
                 while (!closed.get()) {
                     try {
-                        int size;
                         if (in == null) return;
-                        size = in.read(buffer);
+                        
+                        // 从输入流读取数据到临时buffer
+                        int size = in.read(buffer);
+                        if (size < 0) return;
                         if (size > 0) {
-                            WritableMap event = Arguments.createMap();
-                            String hex = SerialPortApiModule.bytesToHex(buffer, size);
-                            event.putString("data", hex);
-                            event.putString("path", path);
-                            sender.sendEvent(DataReceivedEvent, event);
+                            if (protocolParser == null) {
+                                emitData(buffer, size);
+                            } else {
+                                protocolParser.handleData(buffer, size);
+                            }
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        if (!closed.get()) {
+                           Log.e("serialport", "Error reading data: " + e.getMessage());
+                           e.printStackTrace();
+                        }
                         return;
                     }
                 }
             }
         });
         this.readThread.start();
+    }
+
+    private void emitData(byte[] data, int size) {
+        WritableMap event = Arguments.createMap();
+        String hex = SerialPortApiModule.bytesToHex(data, size);
+        event.putString("data", hex);
+        event.putString("path", path);
+        Log.i("serialport", "read size: " + size + ", hex: " + hex);
+        sender.sendEvent(DataReceivedEvent, event);
     }
 
     public WritableMap toJS() {
@@ -68,17 +95,24 @@ public class SerialPortWrapper {
 
     public void write(byte[] buffer) throws IOException {
         this.out.write(buffer);
-
     }
 
     public void close() {
-        closed.set(true);
+        if (closed.getAndSet(true)) {
+            return;
+        }
+        
+        if (readThread != null) {
+            readThread.interrupt();
+        }
+        
         try {
-            in.close();
-            out.close();
+            if (in != null) in.close();
+            if (out != null) out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
         if (this.remover != null) {
             this.remover.remove();
         }

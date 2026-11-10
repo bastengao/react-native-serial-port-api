@@ -10,6 +10,8 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
@@ -65,7 +67,74 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
     }
 
     @ReactMethod
-    public void open(final String path, int baudRate, int parity, int dataBits, int stopBits, Promise promise) {
+    public void open(final String path, int baudRate, int parity, int dataBits, int stopBits, int readBufferSize, Promise promise) {
+        openPort(path, baudRate, parity, dataBits, stopBits, readBufferSize, null, promise);
+    }
+
+    @ReactMethod
+    public void openWithProtocol(final String path, int baudRate, int parity, int dataBits,
+            int stopBits, int readBufferSize, ReadableMap options, Promise promise) {
+        final ProtocolConfig config;
+        try {
+            if (options == null) throw new IllegalArgumentException("protocol options are required");
+            ReadableMap length = optionalMap(options, "lengthField");
+            ReadableMap checksum = optionalMap(options, "checksum");
+            config = new ProtocolConfig(
+                    integer(options, "frameHeader", null), integer(options, "frameTail", null),
+                    integer(options, "minPacketLength", null),
+                    integer(length, "offset", 3), integer(length, "size", 2),
+                    text(length, "endian", "little"), integer(length, "adjustment", 0),
+                    text(checksum, "type", "bcc"), integer(checksum, "startOffset", 3),
+                    integer(checksum, "endOffsetFromEnd", 2), integer(checksum, "offsetFromEnd", 2));
+            if (readBufferSize <= 0 || readBufferSize > (Integer.MAX_VALUE - 1) / 2) {
+                throw new IllegalArgumentException("readBufferSize must be positive and allow a doubled ring buffer capacity");
+            }
+            config.validateCapacity(readBufferSize * 2);
+        } catch (IllegalArgumentException e) {
+            promise.reject("E_INVALID_PROTOCOL", e.getMessage());
+            return;
+        }
+        openPort(path, baudRate, parity, dataBits, stopBits, readBufferSize, config, promise);
+    }
+
+    private static ReadableMap optionalMap(ReadableMap options, String key) {
+        if (!options.hasKey(key)) return null;
+        if (options.isNull(key) || options.getType(key) != ReadableType.Map) {
+            throw new IllegalArgumentException(key + " must be an object");
+        }
+        return options.getMap(key);
+    }
+
+    private static int integer(ReadableMap options, String key, Integer fallback) {
+        if (options == null || !options.hasKey(key)) {
+            if (fallback != null) return fallback;
+            throw new IllegalArgumentException(key + " is required when protocol parsing is enabled");
+        }
+        if (options.isNull(key) || options.getType(key) != ReadableType.Number) {
+            throw new IllegalArgumentException(key + " must be an integer");
+        }
+        double value = options.getDouble(key);
+        if (Double.isNaN(value) || Double.isInfinite(value) || value != Math.rint(value)
+                || value < Integer.MIN_VALUE || value > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException(key + " must be a 32-bit integer");
+        }
+        return (int) value;
+    }
+
+    private static String text(ReadableMap options, String key, String fallback) {
+        if (options == null || !options.hasKey(key)) return fallback;
+        if (options.isNull(key) || options.getType(key) != ReadableType.String) {
+            throw new IllegalArgumentException(key + " must be a string");
+        }
+        return options.getString(key);
+    }
+
+    private void openPort(final String path, int baudRate, int parity, int dataBits, int stopBits,
+            int readBufferSize, ProtocolConfig config, Promise promise) {
+        if (readBufferSize <= 0) {
+            promise.reject("E_INVALID_OPTIONS", "readBufferSize must be positive");
+            return;
+        }
         if (serialPorts.containsKey(path)) {
             promise.resolve(serialPorts.get(path).toJS());
             return;
@@ -85,7 +154,7 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
                     .stopBits(stopBits)
                     .build();
 
-            SerialPortWrapper wrapper = new SerialPortWrapper(path, serialPort, this, remover);
+            SerialPortWrapper wrapper = new SerialPortWrapper(path, readBufferSize, serialPort, this, remover, config);
 
             // TODO: handle previous value
             serialPorts.put(path, wrapper);
@@ -106,6 +175,7 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
         SerialPortWrapper wrapper = serialPorts.get(path);
         if (wrapper == null) {
             promise.reject(null, "serialport not open");
+            return; // 添加return语句，防止继续执行
         }
 
         byte[] buffer = hexStringToByteArray(hexStr);
@@ -121,11 +191,12 @@ public class SerialPortApiModule extends ReactContextBaseJavaModule implements E
 
     @ReactMethod
     public void close(String path, Promise promise) {
+        Log.i("serialport", "close: " + path);
         SerialPortWrapper wrapper = serialPorts.get(path);
         if (wrapper == null) {
             promise.reject(null, "serialport not open");
+            return; // 添加return语句，防止继续执行
         }
-
         wrapper.close();
         promise.resolve(true);
     }
