@@ -17,7 +17,7 @@
     "android/build.gradle"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test tests/api.test.cjs && node tests/run-java-tests.cjs",
     "generate-docs": "node_modules/.bin/jsdoc lib/module -r -R README.md -t node_modules/docdash -d ./docs",
     "generate-docs2": "typedoc --out ./docs2 src/index.ts",
     "prepack": "bob build"

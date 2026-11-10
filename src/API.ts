@@ -4,6 +4,41 @@ import SerialPort, { SerialPortWrapper } from './SerialPort';
 const { SerialPortAPI } = NativeModules;
 const eventEmitter = Platform.OS === 'android' ? new NativeEventEmitter(SerialPortAPI) : null;
 
+export interface LengthFieldOptions {
+  /** Zero-based byte offset. Default: 3. Must follow the frame header. */
+  offset?: number;
+  /** Number of unsigned length bytes. Default: 2. */
+  size?: 1 | 2 | 4;
+  endian?: 'little' | 'big';
+  /** Total frame length = unsigned field value + adjustment. Default: 0. */
+  adjustment?: number;
+}
+
+export interface ChecksumOptions {
+  /** Default: bcc (bytewise XOR). */
+  type?: 'bcc' | 'none';
+  /** Inclusive, zero-based start. Default: 3. */
+  startOffset?: number;
+  /** Exclusive end = frame length minus this value. Default: 2. */
+  endOffsetFromEnd?: number;
+  /** Checksum index = frame length minus this value. Default: 2. */
+  offsetFromEnd?: number;
+}
+
+export interface OpenOptions {
+  baudRate: number;
+  parity?: number;
+  dataBits?: number;
+  stopBits?: number;
+  readBufferSize?: number;
+  /** Supplying protocol options enables framing; all three frame settings are required. */
+  frameHeader?: number;
+  frameTail?: number;
+  minPacketLength?: number;
+  lengthField?: LengthFieldOptions;
+  checksum?: ChecksumOptions;
+}
+
 export default class API {
   /**
    * @callback stringArrayCallback
@@ -78,9 +113,22 @@ export default class API {
    * @param {openOptions} options
    * @returns {Promise<SerialPort>} connected serial port
    */
-  static open(devicePath: string, {baudRate, parity = 0, dataBits = 8, stopBits = 1, readBufferSize = 64}: { baudRate: number, parity?: number, dataBits?: number, stopBits?: number, readBufferSize?: number }): Promise<SerialPort> {
+  static open(devicePath: string, {
+    baudRate, parity = 0, dataBits = 8, stopBits = 1, readBufferSize = 64,
+    frameHeader, frameTail, minPacketLength, lengthField, checksum,
+  }: OpenOptions): Promise<SerialPort> {
     if (Platform.OS !== 'android') throw new Error(`Not support ${Platform.OS}`)
-    return SerialPortAPI.open(devicePath, baudRate, parity, dataBits, stopBits, readBufferSize)
+    const protocol = { frameHeader, frameTail, minPacketLength, lengthField, checksum };
+    // Omit undefined values before crossing the React Native bridge.
+    const configuredProtocol: { [key: string]: unknown } = {};
+    Object.keys(protocol).forEach(key => {
+      const value = protocol[key as keyof typeof protocol];
+      if (value !== undefined) configuredProtocol[key] = value;
+    });
+    const result = Object.keys(configuredProtocol).length === 0
+      ? SerialPortAPI.open(devicePath, baudRate, parity, dataBits, stopBits, readBufferSize)
+      : SerialPortAPI.openWithProtocol(devicePath, baudRate, parity, dataBits, stopBits, readBufferSize, configuredProtocol);
+    return result
       .then((serialPort: SerialPortWrapper) => {
         return Promise.resolve(new SerialPort(serialPort, eventEmitter!));
       })
